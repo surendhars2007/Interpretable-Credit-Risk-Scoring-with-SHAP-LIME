@@ -1,109 +1,129 @@
-Interpretable Credit Risk Scoring with SHAP & LIME
-Project Overview
+Advanced Time Series Forecasting with Prophet + XAI
+Project Description
 
-This project demonstrates the development and interpretation of a machine learning model for predicting loan default risk. Using a synthetic dataset (or the UCI German Credit dataset), an XGBoost classifier is trained to predict whether a borrower is likely to default.
+This project demonstrates advanced time series forecasting using the Facebook Prophet library, incorporating external regressors and explainable AI (XAI) techniques. The goal is to forecast a time series with trends, multiple seasonalities, and external influences, while providing interpretability of the predictions.
 
-The project focuses not only on predictive accuracy but also on model interpretability and fairness, making it suitable for applications in regulated industries like banking.
+The project includes:
 
-Features
+Generation of a synthetic dataset with daily observations over 3 years.
 
-Data preprocessing for categorical and numerical features.
+Integration of external regressors (marketing_spend and economic_index) into the Prophet model.
 
-Training an XGBoost classifier for credit risk prediction.
+Model fitting, forecasting, and evaluation using metrics like MAE and RMSE.
 
-Model evaluation with Accuracy, Precision, Recall, F1-Score, and ROC-AUC.
+Time series cross-validation for model robustness.
 
-Global feature importance visualization using SHAP.
+Feature importance analysis using SHAP.
 
-Local explanations of individual predictions using SHAP and LIME.
+Component contribution analysis (trend, weekly and yearly seasonality, regressors).
 
-Fairness analysis to identify potential prediction disparities across demographic groups.
+Dataset
 
-Tech Stack
+A programmatically generated dataset with the following columns:
 
-Python 3.13
+Column	Description
+ds	Date of observation
+y	Target variable
+marketing_spend	External regressor representing daily marketing spend
+economic_index	External regressor representing economic conditions
 
-Pandas for data manipulation
+Shape: (1096, 4) (3 years of daily data)
 
-NumPy for numerical operations
+Example:
 
-Scikit-learn for preprocessing and metrics
-
-XGBoost for model training
-
-SHAP for explainable AI (global & local interpretations)
-
-LIME for local explanations
-
-Matplotlib for visualizations
+          ds          y  marketing_spend  economic_index
+0 2020-01-01  -2.921191        22.48          100.79
+1 2020-01-02  -4.322760        19.31           80.02
+2 2020-01-03  -5.268728        23.24          109.16
+3 2020-01-04  -6.422633        27.62          103.46
+4 2020-01-05 -13.637028        18.83          109.98
 
 Installation
+Requirements
 
-Clone the repository or download the project files.
+Python 3.9+
 
-Navigate to the project folder in your terminal.
+Libraries listed in requirements.txt:
+
+pandas==2.1.1
+numpy==1.26.2
+matplotlib==3.8.0
+prophet==1.2
+scikit-learn==1.3.0
+xgboost==1.7.6
+shap==0.42.1
+
 
 Install dependencies:
 
 pip install -r requirements.txt
 
+
+Note: Prophet requires cmdstanpy for model fitting. If any installation issues occur, run:
+
+pip install cmdstanpy
+
 Usage
 
-Save the script as haridhaproj.py.
+Run the Python script:
 
-Run the script:
-
-py haridhaproj.py
+python forecast_prophet_xai.py
 
 
-The script will:
+Workflow in the script:
 
-Generate a synthetic dataset.
+Generate synthetic dataset with trend, seasonality, and regressors.
 
-Train an XGBoost model.
+Initialize Prophet with yearly and weekly seasonality.
 
-Display model performance metrics.
+Add external regressors (marketing_spend, economic_index).
 
-Show global feature importance using SHAP.
+Fit the Prophet model and generate forecasts for the next 90 days.
 
-Provide local explanations for 5 selected cases using SHAP and LIME.
+Evaluate model performance using MAE and RMSE.
 
-Perform a simple fairness check based on age groups.
+Perform time series cross-validation using Prophet's cross_validation.
 
-Sample Output
---- Model Performance ---
-Accuracy: 0.75
-Precision: 0.80
-Recall: 0.8571
-F1-Score: 0.8276
-ROC-AUC: 0.7604
+Analyze feature importance using SHAP and XGBoost.
 
---- Global Feature Importance (SHAP) ---
-[Bar plot of feature importance]
+Visualize forecast components (trend, seasonality, regressors).
 
---- Local Explanations for 5 Cases ---
-Case 1 - True Label: 1
-SHAP values: [Force plot]
-LIME explanation: [List of top contributing features]
+Sample forecast with SHAP waterfall plots for explainability.
+
+Results
+Forecast Performance
+MAE: 5.154
+RMSE: 6.356
+
+Cross-Validation Metrics (sample)
+     horizon      rmse       mae      mape
+0    18 days  2.897      2.330    1.667
+1    19 days  2.820      2.248    1.661
 ...
+180 180 days  3.193      2.652    0.126
 
+Sample Forecast for Next 5 Days
+          ds       yhat  yhat_lower  yhat_upper
+0 2023-03-27  40.51   36.92   44.27
+1 2023-03-28  36.55   32.75   40.25
+2 2023-03-29  46.10   42.16   49.87
+3 2023-03-30  45.35   41.53   48.99
+4 2023-03-31  50.65   47.02   54.30
 
-Fairness Check Example by Age
+SHAP Feature Importance
 
-age_group
-(18.999, 27.0]    0.654545
-(27.0, 34.0]      0.755102
-(34.0, 44.0]      0.836735
-...
+marketing_spend and economic_index contributions analyzed using SHAP summary plots.
 
-Project Benefits
+Shows the impact of each external regressor on forecast predictions.
 
-Helps risk committees understand why the model predicts defaults or non-defaults.
+Component Analysis
 
-Provides transparent AI insights for compliance in the finance industry.
+Trend, weekly, yearly seasonality, and regressors contributions are visualized using Prophet’s plot_components.
 
-Demonstrates interpretable machine learning using SHAP and LIME.
+Notes
 
-License
+Dataset is synthetic for demonstration purposes but simulates real-world complexities like multiple seasonalities and external influences.
 
-This project is released under the MIT License.
+Hyperparameters (seasonality, changepoint prior) can be tuned further for production use.
+
+The workflow demonstrates explainable AI (XAI) on time series models.
